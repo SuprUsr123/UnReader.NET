@@ -5,7 +5,9 @@ Imports System.Windows.Forms
 Imports System
 
 Public Class Form1
+    ' Edit!
     Public api As New ServerReader("http://localhost:10000", "")
+    'End of edit.
     Private hasConnected As Boolean = False
     Private isRefreshingFeed As Boolean = False
     Private pendingRefresh As Boolean = False
