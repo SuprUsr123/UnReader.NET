@@ -2,7 +2,7 @@
 Partial Class AboutBox1
     Inherits System.Windows.Forms.Form
 
-    'Form overrides dispose to clean up the component list.
+
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
@@ -22,12 +22,12 @@ Partial Class AboutBox1
     Friend WithEvents OKButton As System.Windows.Forms.Button
     Friend WithEvents LabelCopyright As System.Windows.Forms.Label
 
-    'Required by the Windows Form Designer
+
     Private components As System.ComponentModel.IContainer
 
-    'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
-    'Do not modify it using the code editor.
+
+
+
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         TableLayoutPanel = New TableLayoutPanel()
@@ -40,9 +40,9 @@ Partial Class AboutBox1
         TableLayoutPanel.SuspendLayout()
         CType(LogoPictureBox, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
-        ' 
-        ' TableLayoutPanel
-        ' 
+
+
+
         TableLayoutPanel.ColumnCount = 2
         TableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.0F))
         TableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 67.0F))
@@ -65,9 +65,9 @@ Partial Class AboutBox1
         TableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 10.0F))
         TableLayoutPanel.Size = New Size(603, 298)
         TableLayoutPanel.TabIndex = 0
-        ' 
-        ' LogoPictureBox
-        ' 
+
+
+
         LogoPictureBox.Dock = DockStyle.Fill
         LogoPictureBox.Image = My.Resources.Resource1.CurrentBanner
         LogoPictureBox.Location = New Point(4, 3)
@@ -78,9 +78,9 @@ Partial Class AboutBox1
         LogoPictureBox.SizeMode = PictureBoxSizeMode.Zoom
         LogoPictureBox.TabIndex = 0
         LogoPictureBox.TabStop = False
-        ' 
-        ' LabelProductName
-        ' 
+
+
+
         LabelProductName.Dock = DockStyle.Fill
         LabelProductName.Location = New Point(205, 0)
         LabelProductName.Margin = New Padding(7, 0, 4, 0)
@@ -90,9 +90,9 @@ Partial Class AboutBox1
         LabelProductName.TabIndex = 0
         LabelProductName.Text = "UnReader.NET"
         LabelProductName.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' LabelVersion
-        ' 
+
+
+
         LabelVersion.Dock = DockStyle.Fill
         LabelVersion.Location = New Point(205, 29)
         LabelVersion.Margin = New Padding(7, 0, 4, 0)
@@ -102,9 +102,9 @@ Partial Class AboutBox1
         LabelVersion.TabIndex = 0
         LabelVersion.Text = "Version 1.0 (Test Build)"
         LabelVersion.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' LabelCopyright
-        ' 
+
+
+
         LabelCopyright.Dock = DockStyle.Fill
         LabelCopyright.Location = New Point(205, 58)
         LabelCopyright.Margin = New Padding(7, 0, 4, 0)
@@ -114,9 +114,9 @@ Partial Class AboutBox1
         LabelCopyright.TabIndex = 0
         LabelCopyright.Text = "Custom Frontend by sudo"
         LabelCopyright.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' TextBoxDescription
-        ' 
+
+
+
         TextBoxDescription.Dock = DockStyle.Fill
         TextBoxDescription.Location = New Point(205, 119)
         TextBoxDescription.Margin = New Padding(7, 3, 4, 3)
@@ -128,9 +128,9 @@ Partial Class AboutBox1
         TextBoxDescription.TabIndex = 0
         TextBoxDescription.TabStop = False
         TextBoxDescription.Text = "Credits:" & vbCrLf & "@tock-dev (CandyQAZ) (original owner of unreader)" & vbCrLf & "@HackerAUG (AugustineJames) (Contrib)" & vbCrLf & "@KodiGamingYT (CodyIsBlack) (Contrib)"
-        ' 
-        ' OKButton
-        ' 
+
+
+
         OKButton.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         OKButton.DialogResult = DialogResult.Cancel
         OKButton.Location = New Point(511, 268)
@@ -139,9 +139,9 @@ Partial Class AboutBox1
         OKButton.Size = New Size(88, 27)
         OKButton.TabIndex = 0
         OKButton.Text = "&OK"
-        ' 
-        ' AboutBox1
-        ' 
+
+
+
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         CancelButton = OKButton

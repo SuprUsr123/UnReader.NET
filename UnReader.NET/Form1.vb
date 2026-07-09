@@ -5,9 +5,10 @@ Imports System.Windows.Forms
 Imports System
 
 Public Class Form1
-    ' Edit!
+    'Edit!
     Public api As New ServerReader(SERVER_URL, JWT_SECRET)
     'End of edit.
+
     Private hasConnected As Boolean = False
     Private isRefreshingFeed As Boolean = False
     Private pendingRefresh As Boolean = False

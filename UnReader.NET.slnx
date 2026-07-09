@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="UnReader.NET.Core/UnReader.NET.Core.vbproj" />
+  <Project Path="UnReader.NET.Gtk/UnReader.NET.Gtk.vbproj" />
+  <Project Path="UnReader.NET.Linux/UnReader.NET.Linux.vbproj" />
   <Project Path="UnReader.NET/UnReader.NET.vbproj" />
 </Solution>

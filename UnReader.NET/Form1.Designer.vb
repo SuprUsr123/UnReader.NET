@@ -91,9 +91,9 @@ Partial Class Form1
         CType(UnReaderWeb, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' MainTabControl
-        ' 
+
+
+
         MainTabControl.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         MainTabControl.Controls.Add(ChatTab)
         MainTabControl.Controls.Add(DMsTab)
@@ -107,9 +107,9 @@ Partial Class Form1
         MainTabControl.SelectedIndex = 0
         MainTabControl.Size = New Size(984, 534)
         MainTabControl.TabIndex = 0
-        ' 
-        ' ChatTab
-        ' 
+
+
+
         ChatTab.Controls.Add(lblGlobalOnline)
         ChatTab.Controls.Add(btnGlobalSend)
         ChatTab.Controls.Add(txtGlobalInput)
@@ -122,18 +122,18 @@ Partial Class Form1
         ChatTab.TabIndex = 0
         ChatTab.Text = "GLOBAL CHAT"
         ChatTab.UseVisualStyleBackColor = True
-        ' 
-        ' lblGlobalOnline
-        ' 
+
+
+
         lblGlobalOnline.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblGlobalOnline.Location = New Point(760, 10)
         lblGlobalOnline.Name = "lblGlobalOnline"
         lblGlobalOnline.Size = New Size(205, 16)
         lblGlobalOnline.TabIndex = 0
         lblGlobalOnline.Text = "ACTIVE USERS:"
-        ' 
-        ' btnGlobalSend
-        ' 
+
+
+
         btnGlobalSend.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         btnGlobalSend.FlatAppearance.BorderColor = Color.Black
         btnGlobalSend.FlatAppearance.BorderSize = 2
@@ -143,36 +143,36 @@ Partial Class Form1
         btnGlobalSend.Size = New Size(115, 26)
         btnGlobalSend.TabIndex = 3
         btnGlobalSend.Text = "SEND"
-        ' 
-        ' txtGlobalInput
-        ' 
+
+
+
         txtGlobalInput.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         txtGlobalInput.BorderStyle = BorderStyle.FixedSingle
         txtGlobalInput.Location = New Point(10, 469)
         txtGlobalInput.Name = "txtGlobalInput"
         txtGlobalInput.Size = New Size(830, 22)
         txtGlobalInput.TabIndex = 2
-        ' 
-        ' lstGlobalOnline
-        ' 
+
+
+
         lstGlobalOnline.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
         lstGlobalOnline.BorderStyle = BorderStyle.FixedSingle
         lstGlobalOnline.Location = New Point(760, 30)
         lstGlobalOnline.Name = "lstGlobalOnline"
         lstGlobalOnline.Size = New Size(205, 418)
         lstGlobalOnline.TabIndex = 1
-        ' 
-        ' lstGlobalChat
-        ' 
+
+
+
         lstGlobalChat.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         lstGlobalChat.BorderStyle = BorderStyle.FixedSingle
         lstGlobalChat.Location = New Point(10, 10)
         lstGlobalChat.Name = "lstGlobalChat"
         lstGlobalChat.Size = New Size(740, 434)
         lstGlobalChat.TabIndex = 0
-        ' 
-        ' DMsTab
-        ' 
+
+
+
         DMsTab.Controls.Add(txtDmTargetInput)
         DMsTab.Controls.Add(btnDmStart)
         DMsTab.Controls.Add(lblDmConversations)
@@ -187,18 +187,18 @@ Partial Class Form1
         DMsTab.TabIndex = 5
         DMsTab.Text = "DIRECT MESSAGES"
         DMsTab.UseVisualStyleBackColor = True
-        ' 
-        ' txtDmTargetInput
-        ' 
+
+
+
         txtDmTargetInput.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         txtDmTargetInput.BorderStyle = BorderStyle.FixedSingle
         txtDmTargetInput.Location = New Point(10, 435)
         txtDmTargetInput.Name = "txtDmTargetInput"
         txtDmTargetInput.Size = New Size(125, 22)
         txtDmTargetInput.TabIndex = 0
-        ' 
-        ' btnDmStart
-        ' 
+
+
+
         btnDmStart.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         btnDmStart.FlatAppearance.BorderColor = Color.Black
         btnDmStart.FlatAppearance.BorderSize = 2
@@ -208,17 +208,17 @@ Partial Class Form1
         btnDmStart.Size = New Size(70, 26)
         btnDmStart.TabIndex = 1
         btnDmStart.Text = "ADD"
-        ' 
-        ' lblDmConversations
-        ' 
+
+
+
         lblDmConversations.Location = New Point(10, 10)
         lblDmConversations.Name = "lblDmConversations"
         lblDmConversations.Size = New Size(200, 16)
         lblDmConversations.TabIndex = 2
         lblDmConversations.Text = "CONTACTS:"
-        ' 
-        ' btnDmSend
-        ' 
+
+
+
         btnDmSend.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         btnDmSend.FlatAppearance.BorderColor = Color.Black
         btnDmSend.FlatAppearance.BorderSize = 2
@@ -228,36 +228,36 @@ Partial Class Form1
         btnDmSend.Size = New Size(115, 26)
         btnDmSend.TabIndex = 3
         btnDmSend.Text = "SEND"
-        ' 
-        ' txtDmInput
-        ' 
+
+
+
         txtDmInput.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         txtDmInput.BorderStyle = BorderStyle.FixedSingle
         txtDmInput.Location = New Point(10, 469)
         txtDmInput.Name = "txtDmInput"
         txtDmInput.Size = New Size(830, 22)
         txtDmInput.TabIndex = 2
-        ' 
-        ' lstDmChat
-        ' 
+
+
+
         lstDmChat.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         lstDmChat.BorderStyle = BorderStyle.FixedSingle
         lstDmChat.Location = New Point(220, 10)
         lstDmChat.Name = "lstDmChat"
         lstDmChat.Size = New Size(745, 434)
         lstDmChat.TabIndex = 1
-        ' 
-        ' lstDmConversations
-        ' 
+
+
+
         lstDmConversations.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
         lstDmConversations.BorderStyle = BorderStyle.FixedSingle
         lstDmConversations.Location = New Point(10, 30)
         lstDmConversations.Name = "lstDmConversations"
         lstDmConversations.Size = New Size(200, 386)
         lstDmConversations.TabIndex = 0
-        ' 
-        ' Topics
-        ' 
+
+
+
         Topics.Controls.Add(txtTopicTargetInput)
         Topics.Controls.Add(btnTopicCreate)
         Topics.Controls.Add(lblTopicsList)
@@ -272,18 +272,18 @@ Partial Class Form1
         Topics.TabIndex = 1
         Topics.Text = "TOPICS"
         Topics.UseVisualStyleBackColor = True
-        ' 
-        ' txtTopicTargetInput
-        ' 
+
+
+
         txtTopicTargetInput.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         txtTopicTargetInput.BorderStyle = BorderStyle.FixedSingle
         txtTopicTargetInput.Location = New Point(10, 435)
         txtTopicTargetInput.Name = "txtTopicTargetInput"
         txtTopicTargetInput.Size = New Size(125, 22)
         txtTopicTargetInput.TabIndex = 0
-        ' 
-        ' btnTopicCreate
-        ' 
+
+
+
         btnTopicCreate.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         btnTopicCreate.FlatAppearance.BorderColor = Color.Black
         btnTopicCreate.FlatAppearance.BorderSize = 2
@@ -293,17 +293,17 @@ Partial Class Form1
         btnTopicCreate.Size = New Size(70, 26)
         btnTopicCreate.TabIndex = 1
         btnTopicCreate.Text = "NEW"
-        ' 
-        ' lblTopicsList
-        ' 
+
+
+
         lblTopicsList.Location = New Point(10, 10)
         lblTopicsList.Name = "lblTopicsList"
         lblTopicsList.Size = New Size(200, 16)
         lblTopicsList.TabIndex = 2
         lblTopicsList.Text = "CHANNELS:"
-        ' 
-        ' btnTopicSend
-        ' 
+
+
+
         btnTopicSend.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         btnTopicSend.FlatAppearance.BorderColor = Color.Black
         btnTopicSend.FlatAppearance.BorderSize = 2
@@ -313,36 +313,36 @@ Partial Class Form1
         btnTopicSend.Size = New Size(115, 26)
         btnTopicSend.TabIndex = 3
         btnTopicSend.Text = "SEND"
-        ' 
-        ' txtTopicInput
-        ' 
+
+
+
         txtTopicInput.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         txtTopicInput.BorderStyle = BorderStyle.FixedSingle
         txtTopicInput.Location = New Point(10, 469)
         txtTopicInput.Name = "txtTopicInput"
         txtTopicInput.Size = New Size(830, 22)
         txtTopicInput.TabIndex = 2
-        ' 
-        ' lstTopicChat
-        ' 
+
+
+
         lstTopicChat.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         lstTopicChat.BorderStyle = BorderStyle.FixedSingle
         lstTopicChat.Location = New Point(220, 10)
         lstTopicChat.Name = "lstTopicChat"
         lstTopicChat.Size = New Size(745, 434)
         lstTopicChat.TabIndex = 1
-        ' 
-        ' lstTopicsList
-        ' 
+
+
+
         lstTopicsList.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
         lstTopicsList.BorderStyle = BorderStyle.FixedSingle
         lstTopicsList.Location = New Point(10, 30)
         lstTopicsList.Name = "lstTopicsList"
         lstTopicsList.Size = New Size(200, 386)
         lstTopicsList.TabIndex = 0
-        ' 
-        ' NeighbourhoodTab
-        ' 
+
+
+
         NeighbourhoodTab.Controls.Add(lblNeighbourhoodComments)
         NeighbourhoodTab.Controls.Add(lblNeighbourhoodPosts)
         NeighbourhoodTab.Controls.Add(btnSubmitComment)
@@ -358,25 +358,25 @@ Partial Class Form1
         NeighbourhoodTab.TabIndex = 2
         NeighbourhoodTab.Text = "NEIGHBOURHOOD"
         NeighbourhoodTab.UseVisualStyleBackColor = True
-        ' 
-        ' lblNeighbourhoodComments
-        ' 
+
+
+
         lblNeighbourhoodComments.Location = New Point(420, 10)
         lblNeighbourhoodComments.Name = "lblNeighbourhoodComments"
         lblNeighbourhoodComments.Size = New Size(545, 16)
         lblNeighbourhoodComments.TabIndex = 0
         lblNeighbourhoodComments.Text = "NESTED COMMENT TREE:"
-        ' 
-        ' lblNeighbourhoodPosts
-        ' 
+
+
+
         lblNeighbourhoodPosts.Location = New Point(10, 10)
         lblNeighbourhoodPosts.Name = "lblNeighbourhoodPosts"
         lblNeighbourhoodPosts.Size = New Size(400, 16)
         lblNeighbourhoodPosts.TabIndex = 1
         lblNeighbourhoodPosts.Text = "POST BOARD ROOTS:"
-        ' 
-        ' btnSubmitComment
-        ' 
+
+
+
         btnSubmitComment.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         btnSubmitComment.FlatAppearance.BorderColor = Color.Black
         btnSubmitComment.FlatAppearance.BorderSize = 2
@@ -386,9 +386,9 @@ Partial Class Form1
         btnSubmitComment.Size = New Size(115, 26)
         btnSubmitComment.TabIndex = 5
         btnSubmitComment.Text = "REPLY"
-        ' 
-        ' btnCreatePost
-        ' 
+
+
+
         btnCreatePost.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         btnCreatePost.FlatAppearance.BorderColor = Color.Black
         btnCreatePost.FlatAppearance.BorderSize = 2
@@ -398,18 +398,18 @@ Partial Class Form1
         btnCreatePost.Size = New Size(400, 30)
         btnCreatePost.TabIndex = 1
         btnCreatePost.Text = "[+] CREATE NEW THREAD"
-        ' 
-        ' txtCommentInput
-        ' 
+
+
+
         txtCommentInput.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         txtCommentInput.BorderStyle = BorderStyle.FixedSingle
         txtCommentInput.Location = New Point(420, 469)
         txtCommentInput.Name = "txtCommentInput"
         txtCommentInput.Size = New Size(420, 22)
         txtCommentInput.TabIndex = 4
-        ' 
-        ' txtPostView
-        ' 
+
+
+
         txtPostView.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         txtPostView.BorderStyle = BorderStyle.FixedSingle
         txtPostView.Location = New Point(10, 265)
@@ -419,27 +419,27 @@ Partial Class Form1
         txtPostView.ScrollBars = ScrollBars.Vertical
         txtPostView.Size = New Size(400, 230)
         txtPostView.TabIndex = 2
-        ' 
-        ' treeNeighbourhoodComments
-        ' 
+
+
+
         treeNeighbourhoodComments.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         treeNeighbourhoodComments.BorderStyle = BorderStyle.FixedSingle
         treeNeighbourhoodComments.Location = New Point(420, 30)
         treeNeighbourhoodComments.Name = "treeNeighbourhoodComments"
         treeNeighbourhoodComments.Size = New Size(545, 425)
         treeNeighbourhoodComments.TabIndex = 3
-        ' 
-        ' lstNeighbourhoodPosts
-        ' 
+
+
+
         lstNeighbourhoodPosts.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
         lstNeighbourhoodPosts.BorderStyle = BorderStyle.FixedSingle
         lstNeighbourhoodPosts.Location = New Point(10, 30)
         lstNeighbourhoodPosts.Name = "lstNeighbourhoodPosts"
         lstNeighbourhoodPosts.Size = New Size(400, 178)
         lstNeighbourhoodPosts.TabIndex = 0
-        ' 
-        ' ModerationTab
-        ' 
+
+
+
         ModerationTab.Controls.Add(txtModLogs)
         ModerationTab.Controls.Add(btnModRefreshLogs)
         ModerationTab.Controls.Add(lblModLogs)
@@ -455,9 +455,9 @@ Partial Class Form1
         ModerationTab.TabIndex = 3
         ModerationTab.Text = "MODERATION"
         ModerationTab.UseVisualStyleBackColor = True
-        ' 
-        ' txtModLogs
-        ' 
+
+
+
         txtModLogs.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         txtModLogs.BorderStyle = BorderStyle.FixedSingle
         txtModLogs.Location = New Point(445, 45)
@@ -467,9 +467,9 @@ Partial Class Form1
         txtModLogs.ScrollBars = ScrollBars.Vertical
         txtModLogs.Size = New Size(520, 450)
         txtModLogs.TabIndex = 4
-        ' 
-        ' btnModRefreshLogs
-        ' 
+
+
+
         btnModRefreshLogs.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnModRefreshLogs.FlatAppearance.BorderColor = Color.Black
         btnModRefreshLogs.FlatAppearance.BorderSize = 2
@@ -479,17 +479,17 @@ Partial Class Form1
         btnModRefreshLogs.Size = New Size(115, 26)
         btnModRefreshLogs.TabIndex = 5
         btnModRefreshLogs.Text = "REFRESH"
-        ' 
-        ' lblModLogs
-        ' 
+
+
+
         lblModLogs.Location = New Point(445, 15)
         lblModLogs.Name = "lblModLogs"
         lblModLogs.Size = New Size(385, 16)
         lblModLogs.TabIndex = 6
         lblModLogs.Text = "SYSTEM AUDIT LOGS:"
-        ' 
-        ' txtModUserStatus
-        ' 
+
+
+
         txtModUserStatus.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
         txtModUserStatus.BorderStyle = BorderStyle.FixedSingle
         txtModUserStatus.Location = New Point(10, 290)
@@ -499,9 +499,9 @@ Partial Class Form1
         txtModUserStatus.ScrollBars = ScrollBars.Vertical
         txtModUserStatus.Size = New Size(425, 205)
         txtModUserStatus.TabIndex = 3
-        ' 
-        ' grpModActions
-        ' 
+
+
+
         grpModActions.Controls.Add(btnModBan)
         grpModActions.Controls.Add(btnModPardon)
         grpModActions.Controls.Add(btnModSetRole)
@@ -517,9 +517,9 @@ Partial Class Form1
         grpModActions.TabIndex = 2
         grpModActions.TabStop = False
         grpModActions.Text = "COMMAND MATRIX"
-        ' 
-        ' btnModBan
-        ' 
+
+
+
         btnModBan.FlatAppearance.BorderColor = Color.Black
         btnModBan.FlatAppearance.BorderSize = 2
         btnModBan.FlatStyle = FlatStyle.Flat
@@ -528,9 +528,9 @@ Partial Class Form1
         btnModBan.Size = New Size(190, 35)
         btnModBan.TabIndex = 0
         btnModBan.Text = "BAN TARGET"
-        ' 
-        ' btnModPardon
-        ' 
+
+
+
         btnModPardon.FlatAppearance.BorderColor = Color.Black
         btnModPardon.FlatAppearance.BorderSize = 2
         btnModPardon.FlatStyle = FlatStyle.Flat
@@ -539,9 +539,9 @@ Partial Class Form1
         btnModPardon.Size = New Size(190, 35)
         btnModPardon.TabIndex = 1
         btnModPardon.Text = "PARDON ACCOUNT"
-        ' 
-        ' btnModSetRole
-        ' 
+
+
+
         btnModSetRole.FlatAppearance.BorderColor = Color.Black
         btnModSetRole.FlatAppearance.BorderSize = 2
         btnModSetRole.FlatStyle = FlatStyle.Flat
@@ -550,9 +550,9 @@ Partial Class Form1
         btnModSetRole.Size = New Size(190, 35)
         btnModSetRole.TabIndex = 2
         btnModSetRole.Text = "TOGGLE PROMOTION"
-        ' 
-        ' btnModBanIP
-        ' 
+
+
+
         btnModBanIP.FlatAppearance.BorderColor = Color.Black
         btnModBanIP.FlatAppearance.BorderSize = 2
         btnModBanIP.FlatStyle = FlatStyle.Flat
@@ -561,9 +561,9 @@ Partial Class Form1
         btnModBanIP.Size = New Size(190, 35)
         btnModBanIP.TabIndex = 3
         btnModBanIP.Text = "PURGE NETWORK IP"
-        ' 
-        ' btnModKick
-        ' 
+
+
+
         btnModKick.BackColor = Color.FromArgb(CByte(237), CByte(66), CByte(69))
         btnModKick.FlatAppearance.BorderColor = Color.Black
         btnModKick.FlatAppearance.BorderSize = 2
@@ -575,9 +575,9 @@ Partial Class Form1
         btnModKick.TabIndex = 4
         btnModKick.Text = "KICK USER"
         btnModKick.UseVisualStyleBackColor = False
-        ' 
-        ' numModTimeout
-        ' 
+
+
+
         numModTimeout.BorderStyle = BorderStyle.FixedSingle
         numModTimeout.Location = New Point(215, 122)
         numModTimeout.Maximum = New Decimal(New Integer() {43200, 0, 0, 0})
@@ -586,9 +586,9 @@ Partial Class Form1
         numModTimeout.Size = New Size(50, 22)
         numModTimeout.TabIndex = 5
         numModTimeout.Value = New Decimal(New Integer() {60, 0, 0, 0})
-        ' 
-        ' btnModTimeout
-        ' 
+
+
+
         btnModTimeout.FlatAppearance.BorderColor = Color.Black
         btnModTimeout.FlatAppearance.BorderSize = 2
         btnModTimeout.FlatStyle = FlatStyle.Flat
@@ -597,25 +597,25 @@ Partial Class Form1
         btnModTimeout.Size = New Size(130, 35)
         btnModTimeout.TabIndex = 5
         btnModTimeout.Text = "TIMEOUT (MINS)"
-        ' 
-        ' lblModReason
-        ' 
+
+
+
         lblModReason.Location = New Point(15, 165)
         lblModReason.Name = "lblModReason"
         lblModReason.Size = New Size(390, 16)
         lblModReason.TabIndex = 6
         lblModReason.Text = "OPERATION LOG REASON:"
-        ' 
-        ' txtModReason
-        ' 
+
+
+
         txtModReason.BorderStyle = BorderStyle.FixedSingle
         txtModReason.Location = New Point(15, 185)
         txtModReason.Name = "txtModReason"
         txtModReason.Size = New Size(390, 22)
         txtModReason.TabIndex = 6
-        ' 
-        ' btnModSearch
-        ' 
+
+
+
         btnModSearch.FlatAppearance.BorderColor = Color.Black
         btnModSearch.FlatAppearance.BorderSize = 2
         btnModSearch.FlatStyle = FlatStyle.Flat
@@ -624,25 +624,25 @@ Partial Class Form1
         btnModSearch.Size = New Size(95, 26)
         btnModSearch.TabIndex = 1
         btnModSearch.Text = "QUERY"
-        ' 
-        ' txtModSearchUser
-        ' 
+
+
+
         txtModSearchUser.BorderStyle = BorderStyle.FixedSingle
         txtModSearchUser.Location = New Point(140, 12)
         txtModSearchUser.Name = "txtModSearchUser"
         txtModSearchUser.Size = New Size(190, 22)
         txtModSearchUser.TabIndex = 0
-        ' 
-        ' lblModSearch
-        ' 
+
+
+
         lblModSearch.Location = New Point(10, 15)
         lblModSearch.Name = "lblModSearch"
         lblModSearch.Size = New Size(130, 16)
         lblModSearch.TabIndex = 7
         lblModSearch.Text = "TARGET HANDLE:"
-        ' 
-        ' MainPageOnlineTab
-        ' 
+
+
+
         MainPageOnlineTab.Controls.Add(UnReaderWeb)
         MainPageOnlineTab.Location = New Point(4, 25)
         MainPageOnlineTab.Name = "MainPageOnlineTab"
@@ -651,9 +651,9 @@ Partial Class Form1
         MainPageOnlineTab.TabIndex = 4
         MainPageOnlineTab.Text = "MAIN PAGE"
         MainPageOnlineTab.UseVisualStyleBackColor = True
-        ' 
-        ' UnReaderWeb
-        ' 
+
+
+
         UnReaderWeb.AllowExternalDrop = True
         UnReaderWeb.CreationProperties = Nothing
         UnReaderWeb.DefaultBackgroundColor = Color.White
@@ -663,47 +663,47 @@ Partial Class Form1
         UnReaderWeb.Size = New Size(970, 499)
         UnReaderWeb.TabIndex = 0
         UnReaderWeb.ZoomFactor = 1.0R
-        ' 
-        ' ContextMenuStrip1
-        ' 
+
+
+
         ContextMenuStrip1.Name = "ContextMenuStrip1"
         ContextMenuStrip1.Size = New Size(61, 4)
-        ' 
-        ' MenuStrip1
-        ' 
+
+
+
         MenuStrip1.Items.AddRange(New ToolStripItem() {FileToolStripMenuItem})
         MenuStrip1.Location = New Point(0, 0)
         MenuStrip1.Name = "MenuStrip1"
         MenuStrip1.Size = New Size(984, 24)
         MenuStrip1.TabIndex = 3
         MenuStrip1.Text = "MenuStrip1"
-        ' 
-        ' FileToolStripMenuItem
-        ' 
+
+
+
         FileToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AboutToolStripMenuItem, ToolStripSeparator1, ExitToolStripMenuItem})
         FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         FileToolStripMenuItem.Size = New Size(37, 20)
         FileToolStripMenuItem.Text = "File"
-        ' 
-        ' AboutToolStripMenuItem
-        ' 
+
+
+
         AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         AboutToolStripMenuItem.Size = New Size(107, 22)
         AboutToolStripMenuItem.Text = "About"
-        ' 
-        ' ToolStripSeparator1
-        ' 
+
+
+
         ToolStripSeparator1.Name = "ToolStripSeparator1"
         ToolStripSeparator1.Size = New Size(104, 6)
-        ' 
-        ' ExitToolStripMenuItem
-        ' 
+
+
+
         ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         ExitToolStripMenuItem.Size = New Size(107, 22)
         ExitToolStripMenuItem.Text = "Exit"
-        ' 
-        ' btnPageNewer
-        ' 
+
+
+
         btnPageNewer.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnPageNewer.FlatStyle = FlatStyle.Flat
         btnPageNewer.Location = New Point(680, 2)
@@ -711,9 +711,9 @@ Partial Class Form1
         btnPageNewer.Size = New Size(90, 22)
         btnPageNewer.TabIndex = 1
         btnPageNewer.Text = "< NEWER"
-        ' 
-        ' btnPageOlder
-        ' 
+
+
+
         btnPageOlder.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnPageOlder.FlatStyle = FlatStyle.Flat
         btnPageOlder.Location = New Point(880, 2)
@@ -721,9 +721,9 @@ Partial Class Form1
         btnPageOlder.Size = New Size(90, 22)
         btnPageOlder.TabIndex = 3
         btnPageOlder.Text = "OLDER >"
-        ' 
-        ' lblPageIndex
-        ' 
+
+
+
         lblPageIndex.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblPageIndex.Location = New Point(775, 5)
         lblPageIndex.Name = "lblPageIndex"
@@ -731,9 +731,9 @@ Partial Class Form1
         lblPageIndex.TabIndex = 2
         lblPageIndex.Text = "PAGE: 0"
         lblPageIndex.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Form1
-        ' 
+
+
+
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.White
