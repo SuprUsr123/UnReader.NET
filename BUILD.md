@@ -93,7 +93,7 @@ Build artifacts are in the `bin` directories and published output is in each pro
 
 ## Automatic GitHub releases
 
-Add the repository Actions secrets `UNREADER_SERVER_URL` and `UNREADER_JWT_SECRET`. Every branch push builds both platforms and uploads the packages as workflow artifacts. Pushes to the repository's default branch also publish a release automatically as `v1.0.N`, where `N` is the workflow run number; this makes each version unique and monotonically increasing. Change the `1.0` prefix in `.github/scripts/prepare-release.py` when starting a new minor or major version. GitHub's generated `GITHUB_TOKEN` publishes releases; no personal access token is needed. The JWT signing secret belongs only on the server and is not embedded in desktop clients. The Groq key follows the original site's built-in-key behavior and remains part of the app build.
+In the GitHub Environment named `Configure Build & Release`, set `UNREADER_SERVER_URL` under **Environment variables** and `UNREADER_JWT_SECRET` under **Environment secrets**. Every branch push builds both platforms and uploads the packages as workflow artifacts. Pushes to the repository's default branch also publish a release automatically as `v1.0.N`, where `N` is the workflow run number; this makes each version unique and monotonically increasing. Change the `1.0` prefix in `.github/scripts/prepare-release.py` when starting a new minor or major version. GitHub's generated `GITHUB_TOKEN` publishes releases; no personal access token is needed. The JWT signing secret belongs only on the server and is not embedded in desktop clients. The Groq key follows the original site's built-in-key behavior and remains part of the app build.
 
 ----------
 

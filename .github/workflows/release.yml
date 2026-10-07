@@ -21,6 +21,8 @@ jobs:
           - os: ubuntu-latest
             platform: linux
     runs-on: ${{ matrix.os }}
+    environment:
+      name: Build & Release
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-dotnet@v6
@@ -37,7 +39,7 @@ jobs:
       - name: Publish Windows app
         if: matrix.platform == 'windows'
         env:
-          UNREADER_SERVER_URL: ${{ secrets.UNREADER_SERVER_URL }}
+          UNREADER_SERVER_URL: ${{ vars.UNREADER_SERVER_URL }}
           UNREADER_JWT_SECRET: ${{ secrets.UNREADER_JWT_SECRET }}
           UNREADER_RUNTIME_IDENTIFIER: win-x64
           UNREADER_SELF_CONTAINED: 'true'
@@ -49,7 +51,7 @@ jobs:
       - name: Publish Linux apps
         if: matrix.platform == 'linux'
         env:
-          UNREADER_SERVER_URL: ${{ secrets.UNREADER_SERVER_URL }}
+          UNREADER_SERVER_URL: ${{ vars.UNREADER_SERVER_URL }}
           UNREADER_JWT_SECRET: ${{ secrets.UNREADER_JWT_SECRET }}
           UNREADER_RUNTIME_IDENTIFIER: linux-x64
           UNREADER_SELF_CONTAINED: 'true'
