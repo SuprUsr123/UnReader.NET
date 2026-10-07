@@ -1,9 +1,12 @@
 import os
-import re
-
-tag = os.environ.get("RELEASE_TAG", "")
-if not re.fullmatch(r"v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?", tag):
-    raise SystemExit("Tag must use vMAJOR.MINOR.PATCH, for example v1.21.1 or v1.22.0-pre.1.")
+run_number = int(os.environ["RELEASE_RUN_NUMBER"])
+version = f"1.0.{run_number}"
+tag = f"v{version}"
 
 with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
-    output.write(f"UNREADER_VERSION={tag[1:]}\n")
+    output.write(f"UNREADER_VERSION={version}\n")
+    output.write(f"BUILD_LABEL={tag}\n")
+
+with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+    output.write(f"version={version}\n")
+    output.write(f"tag={tag}\n")

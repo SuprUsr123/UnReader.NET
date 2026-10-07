@@ -2,14 +2,17 @@ name: Build and release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - '**'
 
 permissions:
   contents: read
 
 jobs:
   build:
+    outputs:
+      release_tag: ${{ steps.prepare.outputs.tag }}
+      release_version: ${{ steps.prepare.outputs.version }}
     strategy:
       matrix:
         include:
@@ -18,8 +21,6 @@ jobs:
           - os: ubuntu-latest
             platform: linux
     runs-on: ${{ matrix.os }}
-    env:
-      RELEASE_TAG: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-dotnet@v6
@@ -29,8 +30,9 @@ jobs:
         with:
           python-version: '3.x'
       - name: Prepare release version
+        id: prepare
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_RUN_NUMBER: ${{ github.run_number }}
         run: python .github/scripts/prepare-release.py
       - name: Publish Windows app
         if: matrix.platform == 'windows'
@@ -43,7 +45,7 @@ jobs:
       - name: Package Windows app
         if: matrix.platform == 'windows'
         shell: pwsh
-        run: Compress-Archive -Path ./release/windows/* -DestinationPath "./UnReader.NET-$($env:RELEASE_TAG)-windows-x64.zip"
+        run: Compress-Archive -Path ./release/windows/* -DestinationPath "./UnReader.NET-$($env:BUILD_LABEL)-windows-x64.zip"
       - name: Publish Linux apps
         if: matrix.platform == 'linux'
         env:
@@ -54,14 +56,15 @@ jobs:
         run: bash ./build-release.sh --linux
       - name: Package Linux apps
         if: matrix.platform == 'linux'
-        run: tar -czf "UnReader.NET-${RELEASE_TAG}-linux-x64.tar.gz" -C release linux linux-runner
+        run: tar -czf "UnReader.NET-${BUILD_LABEL}-linux-x64.tar.gz" -C release linux linux-runner
       - uses: actions/upload-artifact@v7
         with:
-          name: release-${{ matrix.platform }}
-          path: UnReader.NET-${{ github.ref_name }}-${{ matrix.platform }}-*
+          name: build-${{ matrix.platform }}
+          path: UnReader.NET-*-${{ matrix.platform }}-*
           if-no-files-found: error
 
   release:
+    if: github.ref_name == github.event.repository.default_branch
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -69,11 +72,12 @@ jobs:
     steps:
       - uses: actions/download-artifact@v8
         with:
-          pattern: release-*
+          pattern: build-*
           merge-multiple: true
       - uses: softprops/action-gh-release@v3
         with:
-          name: UnReader.NET ${{ github.ref_name }}
+          tag_name: ${{ needs.build.outputs.release_tag }}
+          target_commitish: ${{ github.sha }}
+          name: UnReader.NET ${{ needs.build.outputs.release_tag }}
           generate_release_notes: true
-          prerelease: ${{ contains(github.ref_name, '-') }}
-          files: UnReader.NET-${{ github.ref_name }}-*
+          files: UnReader.NET-${{ needs.build.outputs.release_tag }}-*
