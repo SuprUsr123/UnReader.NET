@@ -7,12 +7,10 @@ Module Program
     Sub Main(args As String())
         Application.Init()
 
-        'Edit!
-        Dim serverUrl As String = If(Environment.GetEnvironmentVariable("UNREADER_SERVER_URL"), String.Empty)
-        Dim jwtSecret As String = If(Environment.GetEnvironmentVariable("UNREADER_JWT_SECRET"), String.Empty)
-        'End of edit.
+        Dim envServerUrl = Environment.GetEnvironmentVariable("UNREADER_SERVER_URL")
+        Dim serverUrl = If(String.IsNullOrWhiteSpace(envServerUrl), AppSettings.Current.ServerUrl, envServerUrl)
 
-        Dim loginWindow As New LoginWindow(serverUrl, jwtSecret)
+        Dim loginWindow As New LoginWindow(serverUrl)
         Application.Run()
     End Sub
 End Module

@@ -1,13 +1,15 @@
 Imports Microsoft.Web.WebView2.Core
 Imports System.Collections.Generic
+Imports System.Linq
 Imports System.Threading.Tasks
 Imports System.Windows.Forms
 Imports System
+Imports UnReader.NET.Core
 
 Public Class Form1
-    'Edit!
-    Public api As New ServerReader(SERVER_URL, JWT_SECRET)
-    'End of edit.
+    ' Shared API instance; configured (server URL + token) at login time
+    ' from AppSettings. Kept as a form-wide instance for the legacy call sites.
+    Public Shared api As ServerReader
 
     Private hasConnected As Boolean = False
     Private isRefreshingFeed As Boolean = False
@@ -18,19 +20,59 @@ Public Class Form1
     Private activeNeighborhoodPostId As Integer = -1
     Private isWebViewInitialized As Boolean = False
     Private currentHistoryIndex As Integer = 0
+    Private suggestionPageIndex As Integer = 0
+    Private isSuggestionsLoaded As Boolean = False
+    Private loadedSuggestions As New List(Of Suggestion)
+    Private currentFeedMessages As New List(Of ChatMessage)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If api Is Nothing Then
+            api = New ServerReader(AppSettings.Current.ServerUrl)
+        End If
+
         AddHandler api.OnRosterUpdated, AddressOf HandleRosterUpdate
         AddHandler api.OnDisconnected, AddressOf HandleDisconnect
         AddHandler api.OnErrorAlert, AddressOf HandleErrorAlert
         AddHandler api.OnFeedRefreshed, AddressOf HandleFeedRefresh
         AddHandler api.OnTopicsUpdated, AddressOf HandleTopicsUpdated
+        AddHandler api.OnSuggestionsUpdated, AddressOf HandleSuggestionsUpdated
+        ApplyStaffVisibility()
+    End Sub
+
+    Public Sub ApplyStaffVisibility()
+        ' The server remains the authority; this only keeps irrelevant tabs and
+        ' controls out of each role's way.
+        Dim staff = api IsNot Nothing AndAlso api.IsStaff
+        Dim admin = api IsNot Nothing AndAlso api.IsAdmin
+        If api IsNot Nothing AndAlso api.CurrentUser IsNot Nothing Then
+            Text = $"UnReader.NET — {api.CurrentUser.DisplayRole}"
+        End If
+        btnGlobalPurge.Visible = staff
+        btnDmPurge.Visible = staff
+        btnTopicPurge.Visible = staff
+        ' The server permits users to delete their own suggestions.
+        btnSuggestionDelete.Visible = True
+        btnSuggestionDelete.Enabled = False
+
+        btnModBan.Visible = admin
+        btnModPardon.Visible = admin
+        btnModSetRole.Visible = admin
+        btnModBanIP.Visible = admin
+        btnModKick.Visible = staff
+        btnModTimeout.Visible = staff
+        ' Add or remove the Moderation tab entirely, depending on staff status.
+        If staff AndAlso Not MainTabControl.TabPages.Contains(ModerationTab) Then
+            MainTabControl.TabPages.Add(ModerationTab)
+        ElseIf Not staff AndAlso MainTabControl.TabPages.Contains(ModerationTab) Then
+            MainTabControl.TabPages.Remove(ModerationTab)
+        End If
     End Sub
 
     Private Async Sub Form1_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
         If Me.Visible AndAlso Not hasConnected Then
             hasConnected = True
             Await api.ConnectRealtimeAsync()
+            ApplyStaffVisibility()
             Await LoadInitialDataAsync()
             Await InitializeWebEngineAsync()
         End If
@@ -84,6 +126,11 @@ Public Class Form1
             Case "ModerationTab"
                 currentContext = "moderation"
                 currentTarget = ""
+            Case "SuggestionsTab"
+                If Not isSuggestionsLoaded Then
+                    isSuggestionsLoaded = True
+                    Call RefreshSuggestionsAsync()
+                End If
         End Select
 
         If currentContext = previousContext AndAlso currentTarget = previousTarget Then Return
@@ -91,7 +138,7 @@ Public Class Form1
         currentHistoryIndex = 0
 
         If currentContext <> "neighborhood" AndAlso currentContext <> "moderation" Then
-            Await api.SendWsMessageAsync(New With {.type = "switch_context", .mode = currentContext, .target = currentTarget})
+            Await api.SwitchContextAsync(currentContext, currentTarget)
         End If
 
         Await RefreshActiveFeedAsync()
@@ -136,6 +183,14 @@ Public Class Form1
         Me.Invoke(Sub()
                       MessageBox.Show($"Server Alert: {message}", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                   End Sub)
+    End Sub
+
+    Private Sub HandleSuggestionsUpdated()
+        Me.BeginInvoke(Sub()
+                           If MainTabControl.SelectedTab Is SuggestionsTab Then
+                               Call RefreshSuggestionsAsync()
+                           End If
+                       End Sub)
     End Sub
 
     Private Async Function RefreshActiveFeedAsync() As Task
@@ -185,6 +240,7 @@ Public Class Form1
     End Function
 
     Private Sub UpdateChatBox(listBox As ListBox, messages As IEnumerable(Of ChatMessage))
+        currentFeedMessages = messages.ToList()
         listBox.BeginUpdate()
         listBox.Items.Clear()
         For Each msg In messages
@@ -220,7 +276,7 @@ Public Class Form1
     Private Async Sub btnGlobalSend_Click(sender As Object, e As EventArgs) Handles btnGlobalSend.Click
         If String.IsNullOrWhiteSpace(txtGlobalInput.Text) Then Return
         btnGlobalSend.Enabled = False
-        Await api.SendWsMessageAsync(New With {.type = "message", .content = txtGlobalInput.Text, .target = ""})
+        Await api.SendPublicMessageAsync(txtGlobalInput.Text)
         txtGlobalInput.Clear()
         btnGlobalSend.Enabled = True
     End Sub
@@ -228,7 +284,7 @@ Public Class Form1
     Private Async Sub btnDmSend_Click(sender As Object, e As EventArgs) Handles btnDmSend.Click
         If String.IsNullOrWhiteSpace(txtDmInput.Text) OrElse String.IsNullOrWhiteSpace(currentTarget) Then Return
         btnDmSend.Enabled = False
-        Await api.SendWsMessageAsync(New With {.type = "dm", .content = txtDmInput.Text, .target = currentTarget})
+        Await api.SendDirectMessageAsync(currentTarget, txtDmInput.Text)
         txtDmInput.Clear()
         btnDmSend.Enabled = True
     End Sub
@@ -236,7 +292,7 @@ Public Class Form1
     Private Async Sub btnTopicSend_Click(sender As Object, e As EventArgs) Handles btnTopicSend.Click
         If String.IsNullOrWhiteSpace(txtTopicInput.Text) OrElse String.IsNullOrWhiteSpace(currentTarget) Then Return
         btnTopicSend.Enabled = False
-        Await api.SendWsMessageAsync(New With {.type = "topic_message", .content = txtTopicInput.Text, .target = currentTarget})
+        Await api.SendTopicMessageAsync(currentTarget, txtTopicInput.Text)
         txtTopicInput.Clear()
         btnTopicSend.Enabled = True
     End Sub
@@ -254,7 +310,7 @@ Public Class Form1
         If lstDmConversations.SelectedItem IsNot Nothing Then
             currentTarget = lstDmConversations.SelectedItem.ToString()
             currentHistoryIndex = 0
-            Await api.SendWsMessageAsync(New With {.type = "switch_context", .mode = "dm", .target = currentTarget})
+            Await api.SwitchContextAsync("dm", currentTarget)
             Await RefreshActiveFeedAsync()
         End If
     End Sub
@@ -263,7 +319,7 @@ Public Class Form1
         If lstTopicsList.SelectedItem IsNot Nothing Then
             currentTarget = lstTopicsList.SelectedItem.ToString()
             currentHistoryIndex = 0
-            Await api.SendWsMessageAsync(New With {.type = "switch_context", .mode = "topic", .target = currentTarget})
+            Await api.SwitchContextAsync("topic", currentTarget)
             Await RefreshActiveFeedAsync()
         End If
     End Sub
@@ -279,7 +335,7 @@ Public Class Form1
 
     Private Async Sub btnTopicCreate_Click(sender As Object, e As EventArgs) Handles btnTopicCreate.Click
         If Not String.IsNullOrWhiteSpace(txtTopicTargetInput.Text) Then
-            Await api.SendWsMessageAsync(New With {.type = "create_topic", .title = txtTopicTargetInput.Text})
+            Await api.CreateTopicAsync(txtTopicTargetInput.Text)
             txtTopicTargetInput.Clear()
         End If
     End Sub
@@ -440,6 +496,142 @@ Public Class Form1
         End If
     End Sub
 
+    ' -----------------------------------------------------------------
+    ' Suggestions board (newer server API)
+    ' -----------------------------------------------------------------
+    Private Async Function RefreshSuggestionsAsync() As Task
+        Try
+            Dim items = Await api.GetSuggestionsAsync(suggestionPageIndex)
+            loadedSuggestions = items
+            lstSuggestions.BeginUpdate()
+            lstSuggestions.Items.Clear()
+            For Each s In items
+                lstSuggestions.Items.Add(s)
+            Next
+            lstSuggestions.EndUpdate()
+            lblSuggestionPage.Text = $"PAGE: {suggestionPageIndex}"
+        Catch ex As Exception
+        End Try
+    End Function
+
+    Private Sub lstSuggestions_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstSuggestions.SelectedIndexChanged
+        Dim s As Suggestion = TryCast(lstSuggestions.SelectedItem, Suggestion)
+        If s Is Nothing Then
+            btnSuggestionDelete.Enabled = False
+            Return
+        End If
+
+        Dim isOwner = api IsNot Nothing AndAlso api.CurrentUser IsNot Nothing AndAlso
+            String.Equals(s.Username, api.CurrentUser.Username, StringComparison.OrdinalIgnoreCase)
+        btnSuggestionDelete.Enabled = api IsNot Nothing AndAlso (api.IsStaff OrElse isOwner)
+
+        MessageBox.Show(
+            $"{s.Title}{vbCrLf}{vbCrLf}{s.Description}{vbCrLf}{vbCrLf}" &
+            $"By @{s.Username} ({s.DateText}){vbCrLf}" &
+            If(s.Completed, "[COMPLETED]", "") & If(Not String.IsNullOrWhiteSpace(s.StatusTag), $"  [{s.StatusTag}]", "") & vbCrLf &
+            $"#ID {s.Id}",
+            "Suggestion Details",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information)
+    End Sub
+
+    Private Async Sub btnSuggestionSubmit_Click(sender As Object, e As EventArgs) Handles btnSuggestionSubmit.Click
+        If String.IsNullOrWhiteSpace(txtSuggestionTitle.Text) OrElse String.IsNullOrWhiteSpace(txtSuggestionBody.Text) Then
+            MessageBox.Show("Both a title and description are required.")
+            Return
+        End If
+        btnSuggestionSubmit.Enabled = False
+        Dim err = Await api.PostSuggestionAsync(txtSuggestionTitle.Text.Trim(), txtSuggestionBody.Text.Trim())
+        If err Is Nothing Then
+            txtSuggestionTitle.Clear()
+            txtSuggestionBody.Clear()
+            suggestionPageIndex = 0
+            Await RefreshSuggestionsAsync()
+        Else
+            MessageBox.Show($"Failed to post suggestion: {err}")
+        End If
+        btnSuggestionSubmit.Enabled = True
+    End Sub
+
+    Private Async Sub btnSuggestionDelete_Click(sender As Object, e As EventArgs) Handles btnSuggestionDelete.Click
+        If lstSuggestions.SelectedItem Is Nothing Then Return
+        Dim s As Suggestion = TryCast(lstSuggestions.SelectedItem, Suggestion)
+        If s Is Nothing Then Return
+        If MessageBox.Show($"Delete suggestion #{s.Id} by @{s.Username}?", "Confirm Delete",
+                           MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+            Dim err = Await api.DeleteSuggestionAsync(s.Id)
+            If err Is Nothing Then
+                Await RefreshSuggestionsAsync()
+            Else
+                MessageBox.Show($"Failed to delete suggestion: {err}")
+            End If
+        End If
+    End Sub
+
+    Private Sub btnSuggestionNewer_Click(sender As Object, e As EventArgs) Handles btnSuggestionNewer.Click
+        If suggestionPageIndex > 0 Then
+            suggestionPageIndex -= 1
+            Call RefreshSuggestionsAsync()
+        End If
+    End Sub
+
+    Private Sub btnSuggestionOlder_Click(sender As Object, e As EventArgs) Handles btnSuggestionOlder.Click
+        suggestionPageIndex += 1
+        Call RefreshSuggestionsAsync()
+    End Sub
+
+    Private Sub btnSuggestionRefresh_Click(sender As Object, e As EventArgs) Handles btnSuggestionRefresh.Click
+        Call RefreshSuggestionsAsync()
+    End Sub
+
+    ' -----------------------------------------------------------------
+    ' Staff tools: purge (delete) / restore a message from the active feed.
+    ' -----------------------------------------------------------------
+    Private Async Function PurgeSelectedMessageAsync(listBox As ListBox, channel As String) As Task
+        If listBox.SelectedItem Is Nothing Then Return
+        Dim msg As ChatMessage = Nothing
+        Dim selIndex = listBox.SelectedIndex
+        If selIndex >= 0 AndAlso selIndex < currentFeedMessages.Count Then
+            msg = currentFeedMessages(selIndex)
+        End If
+        If msg Is Nothing Then Return
+
+        Dim reason = If(String.IsNullOrWhiteSpace(txtModReason.Text), "Deleted from desktop client", txtModReason.Text)
+        If MessageBox.Show($"Purge message #{msg.Id} by @{If(String.IsNullOrEmpty(msg.Username), msg.Sender, msg.Username)}?" & vbCrLf & $"Channel: {channel}", "Confirm Purge",
+                           MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+            Await api.ModDeleteMessageAsync(msg.Id, channel, reason)
+            Await RefreshActiveFeedAsync()
+        End If
+    End Function
+
+    Private Async Sub btnGlobalPurge_Click(sender As Object, e As EventArgs) Handles btnGlobalPurge.Click
+        Await PurgeSelectedMessageAsync(lstGlobalChat, "public")
+    End Sub
+
+    Private Async Sub btnDmPurge_Click(sender As Object, e As EventArgs) Handles btnDmPurge.Click
+        Await PurgeSelectedMessageAsync(lstDmChat, "dm")
+    End Sub
+
+    Private Async Sub btnTopicPurge_Click(sender As Object, e As EventArgs) Handles btnTopicPurge.Click
+        Await PurgeSelectedMessageAsync(lstTopicChat, "topic")
+    End Sub
+
+    ' -----------------------------------------------------------------
+    ' Change password (menu item)
+    ' -----------------------------------------------------------------
+    Private Async Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangePasswordToolStripMenuItem.Click
+        Using dlg As New ChangePasswordDialog()
+            If dlg.ShowDialog(Me) = DialogResult.OK Then
+                Dim err = Await api.ChangePasswordAsync(dlg.CurrentPassword, dlg.NewPassword)
+                If err Is Nothing Then
+                    MessageBox.Show("Password changed successfully.", "Change Password", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Else
+                    MessageBox.Show($"Password change failed: {err}", "Change Password", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+            End If
+        End Using
+    End Sub
+
     Private Sub MainForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
         api.DisconnectRealtime()
         Application.Exit()
@@ -467,6 +659,80 @@ Public Class Form1
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Me.Close()
+    End Sub
+
+End Class
+
+Public Class ChangePasswordDialog
+    Inherits Form
+
+    Public ReadOnly Property CurrentPassword As String
+        Get
+            Return _txtCurrent.Text
+        End Get
+    End Property
+
+    Public ReadOnly Property NewPassword As String
+        Get
+            Return _txtNew.Text
+        End Get
+    End Property
+
+    Private _txtCurrent As New TextBox() With {
+        .Location = New Drawing.Point(10, 30),
+        .Size = New Drawing.Size(460, 22),
+        .BorderStyle = BorderStyle.FixedSingle,
+        .UseSystemPasswordChar = True,
+        .PlaceholderText = "Current password..."
+    }
+
+    Private _txtNew As New TextBox() With {
+        .Location = New Drawing.Point(10, 80),
+        .Size = New Drawing.Size(460, 22),
+        .BorderStyle = BorderStyle.FixedSingle,
+        .UseSystemPasswordChar = True,
+        .PlaceholderText = "New password..."
+    }
+
+    Private _btnOk As New Button() With {
+        .Text = "CHANGE",
+        .DialogResult = DialogResult.OK,
+        .Location = New Drawing.Point(310, 115),
+        .Size = New Drawing.Size(80, 28),
+        .FlatStyle = FlatStyle.Flat
+    }
+
+    Private _btnCancel As New Button() With {
+        .Text = "CANCEL",
+        .DialogResult = DialogResult.Cancel,
+        .Location = New Drawing.Point(395, 115),
+        .Size = New Drawing.Size(75, 28),
+        .FlatStyle = FlatStyle.Flat
+    }
+
+    Public Sub New()
+        Text = "CHANGE PASSWORD"
+        ClientSize = New Drawing.Size(480, 155)
+        FormBorderStyle = FormBorderStyle.FixedDialog
+        MaximizeBox = False
+        MinimizeBox = False
+        StartPosition = FormStartPosition.CenterParent
+        AcceptButton = _btnOk
+        CancelButton = _btnCancel
+        Controls.AddRange({_txtCurrent, _txtNew, _btnOk, _btnCancel})
+    End Sub
+
+    Protected Overrides Sub OnFormClosing(e As FormClosingEventArgs)
+        If DialogResult = DialogResult.OK Then
+            If String.IsNullOrWhiteSpace(_txtCurrent.Text) OrElse String.IsNullOrWhiteSpace(_txtNew.Text) Then
+                MessageBox.Show("Both passwords are required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                e.Cancel = True
+            ElseIf _txtNew.Text.Length < 6 Then
+                MessageBox.Show("New password must be at least 6 characters.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                e.Cancel = True
+            End If
+        End If
+        MyBase.OnFormClosing(e)
     End Sub
 
 End Class

@@ -1,0 +1,79 @@
+name: Build and release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+          - os: ubuntu-latest
+            platform: linux
+    runs-on: ${{ matrix.os }}
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+      - name: Prepare release version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python .github/scripts/prepare-release.py
+      - name: Publish Windows app
+        if: matrix.platform == 'windows'
+        env:
+          UNREADER_SERVER_URL: ${{ secrets.UNREADER_SERVER_URL }}
+          UNREADER_JWT_SECRET: ${{ secrets.UNREADER_JWT_SECRET }}
+          UNREADER_RUNTIME_IDENTIFIER: win-x64
+          UNREADER_SELF_CONTAINED: 'true'
+        run: bash ./build-release.sh --windows
+      - name: Package Windows app
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: Compress-Archive -Path ./release/windows/* -DestinationPath "./UnReader.NET-$($env:RELEASE_TAG)-windows-x64.zip"
+      - name: Publish Linux apps
+        if: matrix.platform == 'linux'
+        env:
+          UNREADER_SERVER_URL: ${{ secrets.UNREADER_SERVER_URL }}
+          UNREADER_JWT_SECRET: ${{ secrets.UNREADER_JWT_SECRET }}
+          UNREADER_RUNTIME_IDENTIFIER: linux-x64
+          UNREADER_SELF_CONTAINED: 'true'
+        run: bash ./build-release.sh --linux
+      - name: Package Linux apps
+        if: matrix.platform == 'linux'
+        run: tar -czf "UnReader.NET-${RELEASE_TAG}-linux-x64.tar.gz" -C release linux linux-runner
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-${{ matrix.platform }}
+          path: UnReader.NET-${{ github.ref_name }}-${{ matrix.platform }}-*
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: release-*
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v3
+        with:
+          name: UnReader.NET ${{ github.ref_name }}
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          files: UnReader.NET-${{ github.ref_name }}-*

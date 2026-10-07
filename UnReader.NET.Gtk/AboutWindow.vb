@@ -1,5 +1,6 @@
 Imports Gtk
 Imports System.IO
+Imports System.Reflection
 
 Public Class AboutWindow
     Inherits Dialog
@@ -16,14 +17,7 @@ Public Class AboutWindow
 
         Dim logo As Widget
         Try
-            Dim logoFile As String = System.IO.Path.Combine(AppContext.BaseDirectory, "..")
-            logoFile = System.IO.Path.Combine(logoFile, "..")
-            logoFile = System.IO.Path.Combine(logoFile, "..")
-            logoFile = System.IO.Path.Combine(logoFile, "..")
-            logoFile = System.IO.Path.Combine(logoFile, "UnReader.NET")
-            logoFile = System.IO.Path.Combine(logoFile, "Resources")
-            logoFile = System.IO.Path.Combine(logoFile, "testbanner.png")
-            logoFile = System.IO.Path.GetFullPath(logoFile)
+            Dim logoFile As String = System.IO.Path.Combine(AppContext.BaseDirectory, "Resources", "testbanner.png")
             If File.Exists(logoFile) Then
                 logo = New Image(logoFile)
             Else
@@ -42,7 +36,8 @@ Public Class AboutWindow
         }
         rightBox.PackStart(titleLabel, False, False, 0)
 
-        Dim version As New Label("Version 1.0 (Test Build)") With {.Xalign = 0}
+        Dim appVersion = GetType(AboutWindow).Assembly.GetCustomAttribute(Of System.Reflection.AssemblyInformationalVersionAttribute)()?.InformationalVersion
+        Dim version As New Label($"Version {If(String.IsNullOrWhiteSpace(appVersion), "1.0.0", appVersion)}") With {.Xalign = 0}
         rightBox.PackStart(version, False, False, 0)
 
         Dim copyrightLabel As New Label("Custom Frontend by sudo") With {.Xalign = 0}

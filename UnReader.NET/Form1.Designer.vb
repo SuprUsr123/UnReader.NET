@@ -69,11 +69,26 @@ Partial Class Form1
         txtModSearchUser = New TextBox()
         lblModSearch = New Label()
         MainPageOnlineTab = New TabPage()
+        SuggestionsTab = New TabPage()
+        lstSuggestions = New ListBox()
+        txtSuggestionTitle = New TextBox()
+        txtSuggestionBody = New TextBox()
+        btnSuggestionSubmit = New Button()
+        btnSuggestionRefresh = New Button()
+        lblSuggestionPage = New Label()
+        btnSuggestionNewer = New Button()
+        btnSuggestionOlder = New Button()
+        btnSuggestionDelete = New Button()
+        btnGlobalPurge = New Button()
+        btnDmPurge = New Button()
+        btnTopicPurge = New Button()
         UnReaderWeb = New Microsoft.Web.WebView2.WinForms.WebView2()
         ContextMenuStrip1 = New ContextMenuStrip(components)
         MenuStrip1 = New MenuStrip()
         FileToolStripMenuItem = New ToolStripMenuItem()
         AboutToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator2 = New ToolStripSeparator()
+        ChangePasswordToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator1 = New ToolStripSeparator()
         ExitToolStripMenuItem = New ToolStripMenuItem()
         btnPageNewer = New Button()
@@ -88,6 +103,7 @@ Partial Class Form1
         grpModActions.SuspendLayout()
         CType(numModTimeout, ComponentModel.ISupportInitialize).BeginInit()
         MainPageOnlineTab.SuspendLayout()
+        SuggestionsTab.SuspendLayout()
         CType(UnReaderWeb, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         SuspendLayout()
@@ -101,6 +117,7 @@ Partial Class Form1
         MainTabControl.Controls.Add(NeighbourhoodTab)
         MainTabControl.Controls.Add(ModerationTab)
         MainTabControl.Controls.Add(MainPageOnlineTab)
+        MainTabControl.Controls.Add(SuggestionsTab)
         MainTabControl.Font = New Font("Courier New", 9.75F, FontStyle.Bold)
         MainTabControl.Location = New Point(0, 27)
         MainTabControl.Name = "MainTabControl"
@@ -143,6 +160,19 @@ Partial Class Form1
         btnGlobalSend.Size = New Size(115, 26)
         btnGlobalSend.TabIndex = 3
         btnGlobalSend.Text = "SEND"
+
+
+
+        btnGlobalPurge.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnGlobalPurge.FlatAppearance.BorderColor = Color.Black
+        btnGlobalPurge.FlatAppearance.BorderSize = 2
+        btnGlobalPurge.FlatStyle = FlatStyle.Flat
+        btnGlobalPurge.Location = New Point(720, 467)
+        btnGlobalPurge.Name = "btnGlobalPurge"
+        btnGlobalPurge.Size = New Size(125, 26)
+        btnGlobalPurge.TabIndex = 4
+        btnGlobalPurge.Text = "PURGE SELECTED"
+        btnGlobalPurge.Visible = False
 
 
 
@@ -238,6 +268,19 @@ Partial Class Form1
         txtDmInput.Size = New Size(830, 22)
         txtDmInput.TabIndex = 2
 
+        DMsTab.Controls.Add(btnDmPurge)
+
+        btnDmPurge.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnDmPurge.FlatAppearance.BorderColor = Color.Black
+        btnDmPurge.FlatAppearance.BorderSize = 2
+        btnDmPurge.FlatStyle = FlatStyle.Flat
+        btnDmPurge.Location = New Point(720, 467)
+        btnDmPurge.Name = "btnDmPurge"
+        btnDmPurge.Size = New Size(125, 26)
+        btnDmPurge.TabIndex = 4
+        btnDmPurge.Text = "PURGE SELECTED"
+        btnDmPurge.Visible = False
+
 
 
         lstDmChat.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
@@ -322,6 +365,19 @@ Partial Class Form1
         txtTopicInput.Name = "txtTopicInput"
         txtTopicInput.Size = New Size(830, 22)
         txtTopicInput.TabIndex = 2
+
+        Topics.Controls.Add(btnTopicPurge)
+
+        btnTopicPurge.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnTopicPurge.FlatAppearance.BorderColor = Color.Black
+        btnTopicPurge.FlatAppearance.BorderSize = 2
+        btnTopicPurge.FlatStyle = FlatStyle.Flat
+        btnTopicPurge.Location = New Point(720, 467)
+        btnTopicPurge.Name = "btnTopicPurge"
+        btnTopicPurge.Size = New Size(125, 26)
+        btnTopicPurge.TabIndex = 4
+        btnTopicPurge.Text = "PURGE SELECTED"
+        btnTopicPurge.Visible = False
 
 
 
@@ -652,6 +708,104 @@ Partial Class Form1
         MainPageOnlineTab.Text = "MAIN PAGE"
         MainPageOnlineTab.UseVisualStyleBackColor = True
 
+        SuggestionsTab.Controls.Add(lstSuggestions)
+        SuggestionsTab.Controls.Add(txtSuggestionTitle)
+        SuggestionsTab.Controls.Add(txtSuggestionBody)
+        SuggestionsTab.Controls.Add(btnSuggestionSubmit)
+        SuggestionsTab.Controls.Add(btnSuggestionRefresh)
+        SuggestionsTab.Controls.Add(lblSuggestionPage)
+        SuggestionsTab.Controls.Add(btnSuggestionNewer)
+        SuggestionsTab.Controls.Add(btnSuggestionOlder)
+        SuggestionsTab.Controls.Add(btnSuggestionDelete)
+        SuggestionsTab.Location = New Point(4, 25)
+        SuggestionsTab.Name = "SuggestionsTab"
+        SuggestionsTab.Padding = New Padding(3)
+        SuggestionsTab.Size = New Size(976, 505)
+        SuggestionsTab.TabIndex = 6
+        SuggestionsTab.Text = "SUGGESTIONS"
+        SuggestionsTab.UseVisualStyleBackColor = True
+
+        lstSuggestions.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        lstSuggestions.BorderStyle = BorderStyle.FixedSingle
+        lstSuggestions.Location = New Point(10, 10)
+        lstSuggestions.Name = "lstSuggestions"
+        lstSuggestions.Size = New Size(600, 460)
+        lstSuggestions.TabIndex = 0
+
+        txtSuggestionTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        txtSuggestionTitle.BorderStyle = BorderStyle.FixedSingle
+        txtSuggestionTitle.Location = New Point(620, 30)
+        txtSuggestionTitle.Name = "txtSuggestionTitle"
+        txtSuggestionTitle.Size = New Size(345, 22)
+        txtSuggestionTitle.TabIndex = 1
+        txtSuggestionTitle.PlaceholderText = "App name..."
+
+        txtSuggestionBody.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        txtSuggestionBody.BorderStyle = BorderStyle.FixedSingle
+        txtSuggestionBody.Location = New Point(620, 60)
+        txtSuggestionBody.Multiline = True
+        txtSuggestionBody.Name = "txtSuggestionBody"
+        txtSuggestionBody.Size = New Size(345, 220)
+        txtSuggestionBody.TabIndex = 2
+        txtSuggestionBody.ScrollBars = ScrollBars.Vertical
+
+        btnSuggestionSubmit.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnSuggestionSubmit.FlatAppearance.BorderColor = Color.Black
+        btnSuggestionSubmit.FlatAppearance.BorderSize = 2
+        btnSuggestionSubmit.FlatStyle = FlatStyle.Flat
+        btnSuggestionSubmit.Location = New Point(620, 290)
+        btnSuggestionSubmit.Name = "btnSuggestionSubmit"
+        btnSuggestionSubmit.Size = New Size(345, 28)
+        btnSuggestionSubmit.TabIndex = 3
+        btnSuggestionSubmit.Text = "POST SUGGESTION"
+
+        btnSuggestionDelete.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnSuggestionDelete.FlatAppearance.BorderColor = Color.Black
+        btnSuggestionDelete.FlatAppearance.BorderSize = 2
+        btnSuggestionDelete.FlatStyle = FlatStyle.Flat
+        btnSuggestionDelete.ForeColor = Color.White
+        btnSuggestionDelete.BackColor = Color.FromArgb(CByte(237), CByte(66), CByte(69))
+        btnSuggestionDelete.Location = New Point(620, 330)
+        btnSuggestionDelete.Name = "btnSuggestionDelete"
+        btnSuggestionDelete.Size = New Size(165, 28)
+        btnSuggestionDelete.TabIndex = 4
+        btnSuggestionDelete.Text = "DELETE SELECTED"
+        btnSuggestionDelete.Visible = False
+
+        btnSuggestionRefresh.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnSuggestionRefresh.FlatAppearance.BorderColor = Color.Black
+        btnSuggestionRefresh.FlatAppearance.BorderSize = 2
+        btnSuggestionRefresh.FlatStyle = FlatStyle.Flat
+        btnSuggestionRefresh.Location = New Point(850, 380)
+        btnSuggestionRefresh.Name = "btnSuggestionRefresh"
+        btnSuggestionRefresh.Size = New Size(115, 26)
+        btnSuggestionRefresh.TabIndex = 5
+        btnSuggestionRefresh.Text = "REFRESH"
+
+        lblSuggestionPage.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        lblSuggestionPage.Location = New Point(620, 415)
+        lblSuggestionPage.Name = "lblSuggestionPage"
+        lblSuggestionPage.Size = New Size(100, 16)
+        lblSuggestionPage.TabIndex = 6
+        lblSuggestionPage.Text = "PAGE: 0"
+        lblSuggestionPage.TextAlign = ContentAlignment.MiddleCenter
+
+        btnSuggestionNewer.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnSuggestionNewer.FlatStyle = FlatStyle.Flat
+        btnSuggestionNewer.Location = New Point(620, 440)
+        btnSuggestionNewer.Name = "btnSuggestionNewer"
+        btnSuggestionNewer.Size = New Size(110, 26)
+        btnSuggestionNewer.TabIndex = 7
+        btnSuggestionNewer.Text = "< NEWER"
+
+        btnSuggestionOlder.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnSuggestionOlder.FlatStyle = FlatStyle.Flat
+        btnSuggestionOlder.Location = New Point(855, 440)
+        btnSuggestionOlder.Name = "btnSuggestionOlder"
+        btnSuggestionOlder.Size = New Size(110, 26)
+        btnSuggestionOlder.TabIndex = 8
+        btnSuggestionOlder.Text = "OLDER >"
+
 
 
         UnReaderWeb.AllowExternalDrop = True
@@ -680,7 +834,7 @@ Partial Class Form1
 
 
 
-        FileToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AboutToolStripMenuItem, ToolStripSeparator1, ExitToolStripMenuItem})
+        FileToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AboutToolStripMenuItem, ToolStripSeparator2, ChangePasswordToolStripMenuItem, ToolStripSeparator1, ExitToolStripMenuItem})
         FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         FileToolStripMenuItem.Size = New Size(37, 20)
         FileToolStripMenuItem.Text = "File"
@@ -690,6 +844,17 @@ Partial Class Form1
         AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         AboutToolStripMenuItem.Size = New Size(107, 22)
         AboutToolStripMenuItem.Text = "About"
+
+
+
+        ToolStripSeparator2.Name = "ToolStripSeparator2"
+        ToolStripSeparator2.Size = New Size(104, 6)
+
+
+
+        ChangePasswordToolStripMenuItem.Name = "ChangePasswordToolStripMenuItem"
+        ChangePasswordToolStripMenuItem.Size = New Size(160, 22)
+        ChangePasswordToolStripMenuItem.Text = "Change Password"
 
 
 
@@ -777,12 +942,15 @@ Partial Class Form1
     Friend WithEvents ModerationTab As TabPage
     Friend WithEvents MainPageOnlineTab As TabPage
     Friend WithEvents DMsTab As TabPage
+    Friend WithEvents SuggestionsTab As TabPage
     Friend WithEvents UnReaderWeb As Microsoft.Web.WebView2.WinForms.WebView2
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents ChangePasswordToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
 
     Friend WithEvents btnPageNewer As Button
@@ -794,6 +962,7 @@ Partial Class Form1
     Friend WithEvents txtGlobalInput As TextBox
     Friend WithEvents btnGlobalSend As Button
     Friend WithEvents lblGlobalOnline As Label
+    Friend WithEvents btnGlobalPurge As Button
 
     Friend WithEvents lstDmConversations As ListBox
     Friend WithEvents lstDmChat As ListBox
@@ -802,6 +971,7 @@ Partial Class Form1
     Friend WithEvents lblDmConversations As Label
     Friend WithEvents txtDmTargetInput As TextBox
     Friend WithEvents btnDmStart As Button
+    Friend WithEvents btnDmPurge As Button
 
     Friend WithEvents lstTopicsList As ListBox
     Friend WithEvents lstTopicChat As ListBox
@@ -810,6 +980,7 @@ Partial Class Form1
     Friend WithEvents lblTopicsList As Label
     Friend WithEvents txtTopicTargetInput As TextBox
     Friend WithEvents btnTopicCreate As Button
+    Friend WithEvents btnTopicPurge As Button
 
     Friend WithEvents lstNeighbourhoodPosts As ListBox
     Friend WithEvents treeNeighbourhoodComments As TreeView
@@ -837,4 +1008,15 @@ Partial Class Form1
     Friend WithEvents lblModLogs As Label
     Friend WithEvents txtModLogs As TextBox
     Friend WithEvents btnModRefreshLogs As Button
+
+    Friend WithEvents lstSuggestions As ListBox
+    Friend WithEvents txtSuggestionTitle As TextBox
+    Friend WithEvents txtSuggestionBody As TextBox
+    Friend WithEvents btnSuggestionSubmit As Button
+    Friend WithEvents btnSuggestionDelete As Button
+    Friend WithEvents btnSuggestionRefresh As Button
+    Friend WithEvents lblSuggestionPage As Label
+    Friend WithEvents btnSuggestionNewer As Button
+    Friend WithEvents btnSuggestionOlder As Button
+
 End Class

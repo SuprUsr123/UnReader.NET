@@ -9,11 +9,8 @@ Module Program
     End Sub
 
     Private Async Function MainAsync(args As String()) As Task
-        'Edit!
-        Dim serverUrl As String = If(Environment.GetEnvironmentVariable("UNREADER_SERVER_URL"), String.Empty)
-        Dim jwtSecret As String = If(Environment.GetEnvironmentVariable("UNREADER_JWT_SECRET"), String.Empty)
-        'End of edit.
-        Dim reader As New ServerReader(serverUrl, jwtSecret)
+        Dim serverUrl As String = If(Environment.GetEnvironmentVariable("UNREADER_SERVER_URL"), "http://localhost:10000")
+        Dim reader As New ServerReader(serverUrl)
 
         Console.WriteLine("UnReader.NET Linux console client")
         Console.Write("Username: ")
@@ -64,9 +61,9 @@ Module Program
                         Console.WriteLine(dm)
                     Next
                 Case "/topics"
-                    Dim logs = Await reader.GetModLogsAsync()
-                    For Each t As ModLog In logs
-                        Console.WriteLine(t.FormattedText)
+                    Dim topics = Await reader.GetTopicsAsync()
+                    For Each t As TopicRoom In topics
+                        Console.WriteLine(t.Slug)
                     Next
                 Case Else
                     Console.WriteLine("Unknown command. Use /help")
